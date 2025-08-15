@@ -101,7 +101,7 @@ public class FrmJuego extends JFrame {
     }
 
     private void lanzar() {
-JOptionPane.showMessageDialog(null, "Hizo clic en Lanzar");
+        JOptionPane.showMessageDialog(null, "Hizo clic en Lanzar");
     }
 
 }
