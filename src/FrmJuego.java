@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -13,26 +14,29 @@ import javax.swing.WindowConstants;
 
 public class FrmJuego extends JFrame {
 
+    // se declaran las variables GLOBALES
+    private JLabel lblDado1, lblDado2, lblCenas, lblLanzamientos;
+    private Dado dado1, dado2;
+    private Random r;
+    private int lanzamientos, cenas;
+
     public FrmJuego() {
-        setSize(600, 300);
         setTitle("Juego de dados");
+        setSize(600, 300);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(null);
 
-        JLabel lblDado1 = new JLabel();
-        String archivoImagen = "/imagenes/1.jpg";
+        lblDado1 = new JLabel();
+        String archivoImagen = "imagenes/4.jpg";
         ImageIcon imgDado = new ImageIcon(getClass().getResource(archivoImagen));
         lblDado1.setIcon(imgDado);
-        lblDado1.setBounds(10, 10,
-                imgDado.getIconWidth(),
-                imgDado.getIconHeight());
+        lblDado1.setBounds(10, 10, imgDado.getIconWidth(), imgDado.getIconHeight());
         getContentPane().add(lblDado1);
 
-        JLabel lblDado2 = new JLabel();
+        lblDado2 = new JLabel();
         lblDado2.setIcon(imgDado);
         lblDado2.setBounds(20 + imgDado.getIconWidth(), 10,
-                imgDado.getIconWidth(),
-                imgDado.getIconHeight());
+                imgDado.getIconWidth(), imgDado.getIconHeight());
         getContentPane().add(lblDado2);
 
         JLabel lblTituloLanzamientos = new JLabel("Lanzamientos");
@@ -46,24 +50,24 @@ public class FrmJuego extends JFrame {
         lblTituloCenas.setHorizontalAlignment(SwingConstants.CENTER);
         getContentPane().add(lblTituloCenas);
 
-        JLabel lblLanzamientos = new JLabel("0");
+        lblLanzamientos = new JLabel("0");
         lblLanzamientos.setBounds(30 + 2 * imgDado.getIconWidth(), 40,
                 100, 100);
-        lblLanzamientos.setHorizontalAlignment(SwingConstants.RIGHT);
-        lblLanzamientos.setFont(new Font("Tahoma", 1, 72));
         lblLanzamientos.setBackground(new Color(0, 0, 0));
-        lblLanzamientos.setForeground(new Color(51, 255, 0));
+        lblLanzamientos.setForeground(new Color(50, 255, 0));
+        lblLanzamientos.setFont(new Font("Tahoma", 1, 72));
         lblLanzamientos.setOpaque(true);
+        lblLanzamientos.setHorizontalAlignment(SwingConstants.RIGHT);
         getContentPane().add(lblLanzamientos);
 
-        JLabel lblCenas = new JLabel("0");
+        lblCenas = new JLabel("0");
         lblCenas.setBounds(140 + 2 * imgDado.getIconWidth(), 40,
                 100, 100);
-        lblCenas.setHorizontalAlignment(SwingConstants.RIGHT);
-        lblCenas.setFont(new Font("Tahoma", 1, 72));
         lblCenas.setBackground(new Color(0, 0, 0));
-        lblCenas.setForeground(new Color(51, 255, 0));
+        lblCenas.setForeground(new Color(50, 255, 0));
+        lblCenas.setFont(new Font("Tahoma", 1, 72));
         lblCenas.setOpaque(true);
+        lblCenas.setHorizontalAlignment(SwingConstants.RIGHT);
         getContentPane().add(lblCenas);
 
         JButton btnIniciar = new JButton("Iniciar");
@@ -94,14 +98,35 @@ public class FrmJuego extends JFrame {
 
         });
 
+        // instanciar objetos
+        dado1 = new Dado();
+        dado2 = new Dado();
+        r = new Random();
+
     }
 
     private void iniciarLanzamientos() {
-        JOptionPane.showMessageDialog(null, "Hizo clic en Iniciar");
+        lanzamientos=0;
+        cenas=0;
+        lblLanzamientos.setText(String.valueOf(lanzamientos));
+        lblCenas.setText(String.valueOf(cenas));
     }
 
     private void lanzar() {
-        JOptionPane.showMessageDialog(null, "Hizo clic en Lanzar");
-    }
+        // llamar los metodos LANZAR de cada dado
+        dado1.lanzar(r);
+        dado2.lanzar(r);
+        // mostrar las caras que salieron de los dados con el metodo MOSTRAR
+        dado1.mostrar(lblDado1);
+        dado2.mostrar(lblDado2);
 
+        // incrementar los contadores
+        lanzamientos++;
+        lblLanzamientos.setText(String.valueOf(lanzamientos));
+
+        if (dado1.getCara() + dado2.getCara() >= 11) {
+            cenas++;
+            lblCenas.setText(String.valueOf(cenas));
+        }
+    }
 }
